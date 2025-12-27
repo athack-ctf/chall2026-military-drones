@@ -1,0 +1,33 @@
+# Enforce LF line endings for all text files (critical for cross-platform development)
+* text=auto eol=lf
+
+# Explicit text files
+*.md text
+*.txt text
+*.py text
+*.js text
+*.html text
+*.css text
+*.json text
+*.yml text
+*.yaml text
+*.sh text
+*.bash text
+
+# Dockerfile
+Dockerfile text
+
+# Ensure shell scripts are executable on Linux
+*.sh eol=lf
+*.bash eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
