@@ -1,10 +1,11 @@
-#########################################################################################################################
-# TODO: REPLACE THE CONTENT OF THIS FILE WITH YOUR OWN.
-#########################################################################################################################
+version: '3.8'
 
 services:
   web:
     build: .
-    image: chall2026-online-chall
     ports:
-      - "2026:2026"
+      - "8082:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
+    restart: unless-stopped
