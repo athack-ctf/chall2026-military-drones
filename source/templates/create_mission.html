@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Create Mission - Xyrathian Network{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Create Surveillance Mission</h1>
+    <p class="form-description">Submit a request for orbital reconnaissance. Mission will require approval before drone deployment.</p>
+
+    <form id="mission-form" onsubmit="submitMission(event)">
+        <div class="form-group">
+            <label for="target_zone">Target Zone *</label>
+            <select id="target_zone" name="target_zone" required>
+                <option value="">Select target zone...</option>
+                {% for zone in target_zones %}
+                <option value="{{ zone.id }}">{{ zone.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="duration">Duration (hours) *</label>
+            <input type="number" id="duration" name="duration" value="24" min="1" max="168" required>
+        </div>
+
+        <div class="form-group">
+            <label for="priority">Priority Level</label>
+            <input type="text" id="priority" name="priority" value="" placeholder="Optional">
+        </div>
+
+        <div class="form-group">
+            <label for="metadata">Mission Metadata</label>
+            <input type="text" id="metadata" name="metadata" value="" placeholder="Optional">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit Mission Request</button>
+            <a href="{{ url_for('dashboard') }}" class="btn">Cancel</a>
+        </div>
+    </form>
+
+    <div id="result-message" class="message" style="display:none;"></div>
+</div>
+
+<script>
+function submitMission(event) {
+    event.preventDefault();
+    
+    const formData = {
+        target_zone: document.getElementById('target_zone').value,
+        duration_hours: parseInt(document.getElementById('duration').value)
+    };
+    
+    // These fields are intentionally left visible but not used by default
+    const priority = document.getElementById('priority').value;
+    const metadata = document.getElementById('metadata').value;
+    
+    console.log('Creating mission with data:', formData);
+    
+    fetch('/api/mission/create', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(formData)
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Mission created:', data);
+            console.log('DEBUG: Assigned drone from pool:', data.assigned_drone_id);
+            window.location.href = `/mission/${data.mission_id}`;
+        } else {
+            showMessage('Error: ' + (data.error || 'Unknown error'), 'error');
+        }
+    })
+    .catch(err => {
+        showMessage('Request failed: ' + err.message, 'error');
+    });
+}
+
+function showMessage(text, type) {
+    const msg = document.getElementById('result-message');
+    msg.textContent = text;
+    msg.className = 'message message-' + type;
+    msg.style.display = 'block';
+}
+</script>
+{% endblock %}

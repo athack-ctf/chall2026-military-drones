@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Xyrathian Orbital Surveillance Network{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="nav-icon">📡</span>
+            <span>Xyrathian Orbital Surveillance Network</span>
+        </div>
+        <div class="nav-links">
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('fleet_page') }}">Fleet Manifest</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div>Xyrathian Orbital Network v2.1</div>
+        {% if session.get('username') %}
+            <div>Logged in as: {{ session.get('username') }} ({{ session.get('role')|title }})</div>
+        {% endif %}
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

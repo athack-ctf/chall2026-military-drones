@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Mission #{{ mission.mission_id }} - Xyrathian Network{% endblock %}
+
+{% block content %}
+<div class="mission-details">
+    <div class="details-header">
+        <h1>Mission #{{ mission.mission_id }}</h1>
+        <span class="status-badge status-{{ mission.status }}">{{ mission.status|upper }}</span>
+    </div>
+
+    {% if mission.status == 'pending' %}
+    <div class="alert alert-warning">
+        <strong>Awaiting Authorization</strong><br>
+        Your mission request has been submitted to Command for approval.
+    </div>
+    {% elif mission.status == 'active' %}
+    <div class="alert alert-success">
+        <strong>Mission Active</strong><br>
+        Drone deployed and operational. Surveillance feed is now accessible.
+    </div>
+    {% endif %}
+
+    <div class="details-grid">
+        <div class="detail-card">
+            <h3>Mission Parameters</h3>
+            <table class="detail-table">
+                <tr>
+                    <th>Target Zone:</th>
+                    <td>{{ mission.target_zone.replace('_', ' ')|title }}</td>
+                </tr>
+                <tr>
+                    <th>Duration:</th>
+                    <td>{{ mission.duration_hours }} hours</td>
+                </tr>
+                <tr>
+                    <th>Status:</th>
+                    <td>{{ mission.status|upper }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="detail-card">
+            <h3>Assigned Drone</h3>
+            <table class="detail-table">
+                <tr>
+                    <th>Drone ID:</th>
+                    <td>#{{ mission.assigned_drone_id }}</td>
+                </tr>
+                <tr>
+                    <th>Clearance:</th>
+                    <td>{{ mission.equipment }}</td>
+                </tr>
+                <tr>
+                    <th>Operational:</th>
+                    <td>{% if mission.drone_status == 'active' %}✓ Yes{% else %}✗ No{% endif %}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="action-panel">
+        {% if mission.status == 'pending' %}
+        <button onclick="approveMission({{ mission.mission_id }})" disabled class="btn btn-admin admin-only">
+            Approve Mission
+        </button>
+        <span class="help-text">Approval requires commander authorization</span>
+        {% elif mission.status == 'active' %}
+        <a href="{{ url_for('feed_page', mission_id=mission.mission_id) }}" class="btn btn-primary">
+            Access Surveillance Feed
+        </a>
+        {% endif %}
+        
+        <a href="{{ url_for('dashboard') }}" class="btn">Back to Dashboard</a>
+    </div>
+
+    <div id="api-response" class="api-info" style="display:none;">
+        <h3>Mission Data</h3>
+        <pre id="api-data"></pre>
+    </div>
+</div>
+
+<script>
+// Load mission details via API on page load
+window.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/mission/status/{{ mission.mission_id }}')
+        .then(r => r.json())
+        .then(data => {
+            console.log('Mission status loaded:', data);
+            document.getElementById('api-data').textContent = JSON.stringify(data, null, 2);
+            document.getElementById('api-response').style.display = 'block';
+        });
+});
+
+function approveMission(missionId) {
+    console.log('Attempting to approve mission:', missionId);
+    
+    fetch('/api/mission/approve', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({mission_id: missionId})
+    })
+    .then(r => r.json())
+    .then(data => {
+        console.log('Approval response:', data);
+        if (data.success) {
+            if (data.flag) {
+                alert('Mission approved! Flag captured: ' + data.flag);
+            }
+            location.reload();
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(err => {
+        console.error('Approval failed:', err);
+        alert('Request failed: ' + err.message);
+    });
+}
+</script>
+{% endblock %}

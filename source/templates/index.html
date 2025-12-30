@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1>Xyrathian Orbital Surveillance Network</h1>
+    <p class="subtitle">Mission Control Interface</p>
+    
+    <div class="welcome-message">
+        <p>INTERCEPTED SYSTEM ACCESS GRANTED</p>
+        <p>Our cyber warfare division has breached their orbital surveillance infrastructure. 
+        Limited operator-level access has been established to their mission control interface.</p>
+    </div>
+
+    <div class="login-options">
+        <form action="{{ url_for('login') }}" method="POST">
+            <button type="submit" class="btn btn-primary">Field Operator Access</button>
+        </form>
+        <button class="btn btn-disabled" disabled>Commander Access (Restricted)</button>
+    </div>
+</div>
+
+{% endblock %}

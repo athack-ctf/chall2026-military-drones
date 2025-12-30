@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Fleet Manifest - Xyrathian Network{% endblock %}
+
+{% block content %}
+<div class="fleet-container">
+    <h1>Drone Fleet Manifest</h1>
+    <p class="page-description">Complete inventory of operational surveillance units</p>
+
+    <!-- Drone fleet status: 10 CIVILIAN | 6 MILITARY | 10 CLASSIFIED -->
+
+    <div class="fleet-stats">
+        <div class="stat-card">
+            <div class="stat-value">{{ drones|length }}</div>
+            <div class="stat-label">Total Units</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ drones|selectattr('status', 'equalto', 'active')|list|length }}</div>
+            <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Clearance Levels</div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="fleet-table">
+            <thead>
+                <tr>
+                    <th>Unit ID</th>
+                    <th>Status</th>
+                    <th>Equipment</th>
+                    <th>Clearance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for drone in drones %}
+                <tr class="drone-row clearance-{{ drone.clearance_level }}">
+                    <td><strong>#{{ drone.drone_id }}</strong></td>
+                    <td>
+                        <span class="status-indicator status-{{ drone.status }}">
+                            {{ drone.status|upper }}
+                        </span>
+                    </td>
+                    <td>{{ drone.equipment }}</td>
+                    <td>
+                        <span class="clearance-badge level-{{ drone.clearance_level }}">
+                            Level {{ drone.clearance_level }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="info-panel">
+        <h3>ℹ️ Fleet Information</h3>
+        <p>Drones are automatically assigned based on operational requirements and target classification. 
+        High-priority targets require specialized equipment.</p>
+        <p><strong>Standard protocol:</strong> Civilian drones (ID 5000+) for routine surveillance. 
+        Specialized units for sensitive operations.</p>
+    </div>
+
+    <div class="fleet-actions">
+        <a href="{{ url_for('dashboard') }}" class="btn">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

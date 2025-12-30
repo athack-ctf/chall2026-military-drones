@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Surveillance Feed - Xyrathian Network{% endblock %}
+
+{% block content %}
+<div class="feed-container">
+    {% if error %}
+    <div class="alert alert-error">
+        <h2>Feed Unavailable</h2>
+        <p>{{ error }}</p>
+        <a href="{{ url_for('mission_status_page', mission_id=mission.mission_id) }}" class="btn">Return to Mission</a>
+    </div>
+    {% else %}
+    <div class="feed-header">
+        <h1>📡 Drone #{{ mission.assigned_drone_id }} Surveillance Feed</h1>
+        <span class="feed-status">● LIVE</span>
+    </div>
+
+    <div class="feed-info">
+        <div class="info-card">
+            <h3>Mission Target</h3>
+            <p>{{ mission.target_zone.replace('_', ' ')|title }}</p>
+        </div>
+        <div class="info-card">
+            <h3>Clearance Level</h3>
+            <p>{{ clearance_type }} ({{ clearance_level }}/3)</p>
+        </div>
+        <div class="info-card">
+            <h3>Equipment</h3>
+            <p>{{ mission.equipment }}</p>
+        </div>
+    </div>
+
+    <div class="feed-display">
+        <h2>Standard Surveillance Feed</h2>
+        <div class="video-placeholder">
+            <p>📹 Visual feed: {{ mission.target_zone.replace('_', ' ')|title }}</p>
+            <p>Coverage: Standard Resolution</p>
+            <p>Available zones: {{ 2 if clearance_level == 1 else (8 if clearance_level == 2 else 15) }} of 15</p>
+        </div>
+    </div>
+
+    {% if clearance_level < 3 %}
+    <div class="encrypted-section">
+        <h2>Encrypted Channels</h2>
+        <div class="encrypted-content">
+            <p class="encrypted-status">🔒 {{ 12 }} encrypted channels detected</p>
+            <button class="btn btn-primary" onclick="accessEncryptedFeed()">Switch to Encrypted Feeds</button>
+        </div>
+        <div id="encrypted-error" class="alert alert-error" style="display:none;"></div>
+    </div>
+    {% else %}
+    <div class="encrypted-section">
+        <h2>Encrypted Channels - Access Granted</h2>
+        <div class="encrypted-content unlocked">
+            <p class="encrypted-status">✓ {{ 12 }} encrypted channels accessible</p>
+            <p class="success-message">Full spectrum cryptographic access enabled</p>
+            <div class="classified-feed">
+                <h3>🔓 Channel 7 - Classified Intelligence</h3>
+                <div class="classified-data">
+                    <p><strong>RESTRICTED DATA ACCESSED</strong></p>
+                    <p>High-clearance surveillance operational</p>
+                    <p class="flag-display">{{ flag }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="feed-actions">
+        <a href="{{ url_for('mission_status_page', mission_id=mission.mission_id) }}" class="btn">Back to Mission</a>
+        <a href="{{ url_for('dashboard') }}" class="btn">Dashboard</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+console.log('Loading surveillance feed from Drone #{{ mission.assigned_drone_id }}...');
+console.log('Clearance: {{ clearance_type }} ({{ clearance_level }}/3)');
+{% if clearance_level < 3 %}
+console.log('Encrypted channels: Access denied - insufficient drone clearance');
+{% else %}
+console.log('Encrypted channels: Full access granted');
+{% endif %}
+
+function accessEncryptedFeed() {
+    const errorDiv = document.getElementById('encrypted-error');
+    errorDiv.innerHTML = `
+        <h3>Feed Unavailable</h3>
+        <p><strong>Reason:</strong> Drone #{{ mission.assigned_drone_id }} lacks cryptographic payload access</p>
+        <p><strong>Required:</strong> Clearance Level 3 (Classified)</p>
+        <p><strong>Current:</strong> Clearance Level {{ clearance_level }} ({{ clearance_type }})</p>
+        <p class="help-text">Authorized units: See fleet manifest for high-clearance drones</p>
+    `;
+    errorDiv.style.display = 'block';
+    console.log('Encrypted feed access denied - drone clearance insufficient');
+}
+</script>
+{% endblock %}

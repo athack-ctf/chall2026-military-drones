@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Operations History - Xyrathian Network{% endblock %}
+
+{% block content %}
+<div class="operations-page">
+    <div class="page-header">
+        <h1>Recent Operations</h1>
+        <p class="subtitle">System-wide Mission Log</p>
+    </div>
+
+    <div class="operations-content">
+        <div id="loading" class="loading-state">Loading operations...</div>
+        <div id="operations-table"></div>
+    </div>
+</div>
+
+<script>
+// Load operations on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadOperations();
+});
+
+function loadOperations() {
+    fetch('/api/mission/history')
+        .then(r => r.json())
+        .then(data => {
+            const loading = document.getElementById('loading');
+            const tableContainer = document.getElementById('operations-table');
+            
+            loading.style.display = 'none';
+            
+            let html = '<table class="history-table"><thead><tr>';
+            html += '<th>Mission ID</th><th>Operator</th><th>Drone</th><th>Target</th><th>Status</th>';
+            html += '</tr></thead><tbody>';
+            
+            data.missions.forEach(m => {
+                html += `<tr>`;
+                html += `<td>#${m.mission_id}</td>`;
+                html += `<td>${m.user}</td>`;
+                html += `<td>#${m.drone_id}</td>`;
+                html += `<td>${m.target}</td>`;
+                html += `<td><span class="status-badge status-${m.status}">${m.status}</span></td>`;
+                html += `</tr>`;
+            });
+            
+            html += '</tbody></table>';
+            tableContainer.innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('loading').textContent = 'Error loading operations';
+            console.error('Failed to load operations:', err);
+        });
+}
+</script>
+{% endblock %}

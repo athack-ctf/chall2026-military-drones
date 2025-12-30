@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Xyrathian Network{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>Mission Control Dashboard</h1>
+        <div class="user-badge">
+            <span class="badge-label">Clearance:</span>
+            <span class="badge-value">Tier 1 - {{ role|title }}</span>
+        </div>
+    </div>
+
+    <div class="action-grid">
+        <a href="{{ url_for('create_mission_page') }}" class="action-card">
+            <div class="card-icon">➕</div>
+            <h3>Create New Mission</h3>
+            <p>Submit surveillance request</p>
+        </a>
+
+        <a href="{{ url_for('fleet_page') }}" class="action-card">
+            <div class="card-icon">🛸</div>
+            <h3>Fleet Manifest</h3>
+            <p>View available drones</p>
+        </a>
+
+        <a href="{{ url_for('operations_page') }}" class="action-card">
+            <div class="card-icon">📋</div>
+            <h3>Recent Operations</h3>
+            <p>System-wide mission log</p>
+        </a>
+    </div>
+
+    <div class="missions-section">
+        <h2>Your Missions</h2>
+        {% if missions %}
+            <div class="missions-list">
+                {% for mission in missions %}
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-id">Mission #{{ mission.mission_id }}</span>
+                        <span class="status-badge status-{{ mission.status }}">{{ mission.status|upper }}</span>
+                    </div>
+                    <div class="mission-body">
+                        <p><strong>Target:</strong> {{ mission.target_zone.replace('_', ' ')|title }}</p>
+                        <p><strong>Drone:</strong> #{{ mission.assigned_drone_id }}</p>
+                        <p><strong>Duration:</strong> {{ mission.duration_hours }} hours</p>
+                    </div>
+                    <div class="mission-actions">
+                        <a href="{{ url_for('mission_status_page', mission_id=mission.mission_id) }}" class="btn btn-small">View Details</a>
+                        {% if mission.status == 'active' %}
+                            <a href="{{ url_for('feed_page', mission_id=mission.mission_id) }}" class="btn btn-small btn-primary">Access Feed</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">No missions created yet. Start by creating a new surveillance mission.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
