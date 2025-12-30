@@ -1,10 +1,6 @@
-The description of your challenge as seen by participants in CTFd. Try to make it feel within the theme
-of the event...
+Our cyber warfare division has successfully breached a Alien orbital surveillance network.
+It looks like have an entire feet of drones operated by their stuff. Your job is to infiltrate their mission system and see what kind of secrets they managed to collect. Try to access their classified feeds.
 
 ---
-If your challenge is a multi-flag one (i.e., it consists of a sequence of sub-challenges each rewarded with
-its own flag), requiring a different description for each sub-challenge, then have your descriptions split as 
-done with this paragraph, and the next one.
 
----
-Obviously, for each sub-challenge, you should provide its flag value in [solution/FLAGS.md](solution/FLAGS.md).
+See if you can take control of some of the best drones they have and use them against them. We will need any information you can collect about them

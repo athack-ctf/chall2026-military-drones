@@ -1,10 +1,7 @@
 # FLAGS
 
-- `ATHACKCTF{y0ur1stflagGoesHere}` 
-- `ATHACKCTF{y0ur2ndflagGoesHere}`
-- `...`
+**Flag 5** (Authorization Workflow Bypass):
+- `ATHACKCTF{unauth0r1z3d_m1ss10n_4ppr0v4l}`
 
-## IMPORTANT
-Unless it's impossible or technically difficult, flags should follow the format `ATHACKCTF{__________}` 
-
-(as shown in the examples above). The random value within the brackets should be sufficiently long and non-trivial.
+**Flag 6** (Drone Clearance Escalation):
+- `ATHACKCTF{3sc4l4t3d_surv31ll4nc3_4cc3ss}`

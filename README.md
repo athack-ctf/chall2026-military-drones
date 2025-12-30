@@ -1,6 +1,6 @@
-# Chall - Your Challenge Title
+# System Compromise - Xyrathian Orbital Surveillance Network
 
-> A brief description of the challenge
+> Exploit business logic vulnerabilities in an alien mission control system to bypass authorization workflows and escalate drone access privileges
 
 ## Challenge Type
 
@@ -14,30 +14,17 @@
 
 ## Designer(s)
 
-- Ada Lovelace
-- Barbara Liskov
+- Oleksiy Savytskyy
 
 ## Description
 
-A high-level overview intended to clarify the concept and intuition behind the challenge, outlining its educational
-goals and the skills it aims to test in participants.
+This beginner-track web security challenge (difficulty 2.5-4/10) teaches business logic exploitation through a realistic mission control interface. Participants must understand architectural workflows rather than simply finding injection vulnerabilities. **Flag 5** requires discovering and exploiting an unprotected authorization endpoint to approve missions without proper credentials, bypassing the intended approval workflow. **Flag 6** requires recognizing the drone fleet hierarchy, understanding clearance-based access control, and manipulating request parameters to gain access to restricted surveillance feeds. Built with Flask/Python, the challenge emphasizes API exploration, state manipulation, parameter tampering, and understanding relationships between system resources. Unlike previous containers, hints are subtle and distributed across UI elements, network traffic, and natural system behaviors rather than TODO comments or diagnostic endpoints.
 
 **IMPORTANT:** This description will **NOT** be shared with participants.
 
 ## Category(ies)
 
-- `pwn`
-- `re`
 - `web`
-- `stegano`
-- `env`
-- `crypto`
-- `osint`
-- `web3`
-- `ai`
-- `android`
-- `auto`
-- `misc`
 
 ---
 
