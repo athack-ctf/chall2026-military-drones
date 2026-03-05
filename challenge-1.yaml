@@ -1,0 +1,77 @@
+# challeng.yaml MUST be placed at the root of the challenge repo.
+
+# Challenge Name (for single flag challenges)
+name: "Military Drones - 1"
+
+# Author name
+author: "Oleksiy"
+
+# "Web", "AI", "Crypto", "Forensics", "Hardware", "OSINT", "Pwn", "Rev", "Stegano", "MISC", "Physical"
+category: "Web"
+
+# DO NOT remove the vertical character "|" (aka pipe character)
+description: |
+  Our cyber warfare division has successfully breached a Alien orbital surveillance network.
+  It looks like have an entire fleet of drones operated by their commanders. Your job is to infiltrate their mission system and see what kind of secrets they managed to collect. 
+  Try to access their classified feeds.
+
+  ### Part 1/2
+
+  We have noted that the missions need to get approved by alien commanders for any meaningful access, maybe there is a way to bypass it?
+  
+  [Start your challenge instance](https://instancer.athackctf.com/chall2026-military-drones/create)
+
+# The field connection_info is used to provide a link, hostname, or instructions on how to connect to a challenge
+
+# Uncomment for online challs
+# connection_info: "nc localhost <port> # port provided by Boundary"
+# connection_info: "telnet localhost <port> # port provided by Boundary"
+connection_info: "http://localhost:<port> # port provided by Boundary"
+
+flags:
+  - type: "static"
+    content: "ATHACKCTF{unauth0r1z3d_m1ss10n_4ppr0v4l}"
+    data: "case_insensitive"
+
+# List all files you distributed with the challenge (all should be placed within ./offline-artifacts/)
+# files:
+#   - ./offline-artifacts/file1.zip
+#   - ./offline-artifacts/file2.zip
+
+# Requirements are used to make a challenge require another challenge to be
+# solved before being available.
+# Can be removed if unused
+# Accepts challenge display names as strings (or challenge IDs as integers).
+# requirements:
+#     - "Warmup"
+#     - "Are you alive"
+
+# Do not use any tag outside what's listed bellow
+tags:
+  # Indicates that this challenge is deemed beginner-friendly
+  - beginner
+  # Indicates that this challenge is sponsored
+  # - sponsored
+  # Indicates that this challenge is exclusive to a specific bracket
+  # - exclusive-beginner
+  # - exclusive-regular
+
+# Scoring (we'll be using dynamic scoring everywhere!)
+type: dynamic
+# Mandatory (make it equal to the minimum value for consistency)
+value: 5
+# Parameters of dynamic scoring
+extra:
+  # Maximum points
+  initial: 5
+  # Minimum points after decay
+  minimum: 0
+  # Number of solves to reach minimum (75% of expect number of active teams form both brackets)
+  decay: 1
+  # We'll stick exclusively to logarithmic
+  function: logarithmic
+
+# Challs will be hidden at first
+state: hidden
+
+version: "0.1"
