@@ -12,13 +12,15 @@ category: "Web"
 # DO NOT remove the vertical character "|" (aka pipe character)
 description: |
   Our cyber warfare division has successfully breached a Alien orbital surveillance network.
+
   It looks like have an entire fleet of drones operated by their commanders. Your job is to infiltrate their mission system and see what kind of secrets they managed to collect. 
+
   Try to access their classified feeds.
 
   ### Part 1/2
 
   We have noted that the missions need to get approved by alien commanders for any meaningful access, maybe there is a way to bypass it?
-  
+
   [Start your challenge instance](https://instancer.athackctf.com/chall2026-military-drones/create)
 
 # The field connection_info is used to provide a link, hostname, or instructions on how to connect to a challenge
