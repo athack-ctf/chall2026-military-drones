@@ -5,7 +5,7 @@ services:
     image: athack-ctf/chall2026-military-drones:latest
     container_name: chall2026-military-drones
     build:
-      context: .
-      dockerfile: source/Dockerfile
+      context: ./source
+      dockerfile: Dockerfile
     ports:
       - "53014:5000"
